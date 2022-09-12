@@ -27,6 +27,13 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+AUTH_USER_MODEL = "users.User"
+
+AUTHENTICATION_BACKENDS = (
+   "blog.user.backends.EmailAuthBackend",
+   "django.contrib.auth.backends.ModelBackend",
+)
+
 
 # Application definition
 
