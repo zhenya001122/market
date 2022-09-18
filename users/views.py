@@ -4,22 +4,22 @@ from django.contrib import messages
 from users.forms import RegisterForm, LoginForm, CustomUserCreationForm
 from django.contrib.auth import logout, login, authenticate
 
+from users.models import User
 
 
-
-def register(request):
+def register_view(request):
     # if request.user.is_authenticated:
     #     return redirect("/")
 
     if request.method == "POST":
-        form = CustomUserCreationForm(request.POST)
+        form = RegisterForm(request.POST)
         if form.is_valid():
-            form.save()
-            email = form.cleaned_data.get('email')
-            messages.success(request, f'Создан аккаунт {email}!')
+            user = User(email=form.cleaned_data["email"])
+            user.set_password(form.cleaned_data["password"])
+            user.save()
             return redirect("/")
     else:
-        form = CustomUserCreationForm()
+        form = RegisterForm()
     return render(request, "users/register.html", {"form": form})
 
 def login_view(request):
